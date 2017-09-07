@@ -1,0 +1,164 @@
+C51 COMPILER V9.01   MAIN                                                                  08/20/2017 12:39:13 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include<intrins.h>
+   3          
+   4          #define uchar unsigned char
+   5          #define uint unsigned int
+   6          #define RdCommand 0x01
+   7          #define PrgCommand 0x02
+   8          #define EraseCommand 0x03
+   9          #define Error 1
+  10          #define Ok 0
+  11          #define WaitTime 0x01
+  12          
+  13          sfr ISP_DATA=0xe2;
+  14          sfr ISP_ADDRH=0xe3;
+  15          sfr ISP_ADDRL=0xe4;
+  16          sfr ISP_CMD=0xe5;
+  17          sfr ISP_TRIG=0xe6;
+  18          sfr ISP_CONTR=0xe7;
+  19          
+  20          sbit LS138A=P2^2;
+  21          sbit LS138B=P2^3;
+  22          sbit LS138C=P2^4;
+  23          
+  24          uchar code Disp_Tab[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+  25          uchar LedOut[8]={0,0,0,0,0,0,0,0};
+  26          uchar num;
+  27          
+  28          void delayms(uint xms){
+  29   1              uint i,j;
+  30   1              for(i=xms;i>0;i--)
+  31   1                      for(j=110;j>0;j--); 
+  32   1      }
+  33          
+  34          void display(){
+  35   1              uchar i;
+  36   1              for( i=0; i<8; i++) 
+  37   1               {       
+  38   2                      P0 = Disp_Tab[LedOut[i]];
+  39   2                              
+  40   2                      switch(i)                                         
+  41   2                   {      
+  42   3                              case 0:LS138A=0; LS138B=0; LS138C=0; break;         
+  43   3                      case 1:LS138A=1; LS138B=0; LS138C=0; break;                     
+  44   3                      case 2:LS138A=0; LS138B=1; LS138C=0; break; 
+  45   3                      case 3:LS138A=1; LS138B=1; LS138C=0; break; 
+  46   3                              case 4:LS138A=0; LS138B=0; LS138C=1; break;
+  47   3                              case 5:LS138A=1; LS138B=0; LS138C=1; break;
+  48   3                              case 6:LS138A=0; LS138B=1; LS138C=1; break;
+  49   3                              case 7:LS138A=1; LS138B=1; LS138C=1; break;
+  50   3                              
+  51   3                   }
+  52   2      
+  53   2                      delayms(1);
+  54   2               }
+  55   1      }
+C51 COMPILER V9.01   MAIN                                                                  08/20/2017 12:39:13 PAGE 2   
+
+  56          
+  57          void ISP_IAP_enable(){
+  58   1              EA=0;
+  59   1              ISP_CONTR=ISP_CONTR&0x18;
+  60   1              ISP_CONTR=ISP_CONTR|WaitTime;
+  61   1              ISP_CONTR=ISP_CONTR|0x80;
+  62   1      }
+  63          
+  64          void ISP_IAP_disable(){
+  65   1              ISP_CONTR=ISP_CONTR&0x7f;
+  66   1              ISP_TRIG=0x00;
+  67   1              EA=1;
+  68   1      }
+  69          
+  70          void ISPgoon(){
+  71   1              ISP_IAP_enable();
+  72   1              ISP_TRIG=0x46;
+  73   1              ISP_TRIG=0xb9;
+  74   1              _nop_();
+  75   1      }
+  76          
+  77          unsigned char byte_read(unsigned int byte_addr){
+  78   1              ISP_ADDRH=(unsigned char)(byte_addr>>8);
+  79   1              ISP_ADDRL=(unsigned char)(byte_addr&0x00ff);
+  80   1              ISP_CMD=ISP_CMD&0xf8;
+  81   1              ISP_CMD=ISP_CMD|RdCommand;
+  82   1              ISPgoon();
+  83   1              ISP_IAP_disable();
+  84   1              return (ISP_DATA);
+  85   1      }
+  86          
+  87          void SectorErase(unsigned int sector_addr){
+  88   1              uint iSectorAddr;
+  89   1              iSectorAddr=(sector_addr&0xfe00);
+  90   1              ISP_ADDRH=(unsigned char)(iSectorAddr>>8);
+  91   1              ISP_ADDRL=0x00;
+  92   1              ISP_CMD=ISP_CMD&0xf8;
+  93   1              ISP_CMD=ISP_CMD|EraseCommand;
+  94   1              ISPgoon();
+  95   1              ISP_IAP_disable();
+  96   1      }
+  97          
+  98          void byte_write(unsigned int byte_addr,unsigned char original_data){
+  99   1              ISP_ADDRH=(unsigned char)(byte_addr>>8);
+ 100   1              ISP_ADDRL=(unsigned char)(byte_addr&0x00ff);
+ 101   1              ISP_CMD=ISP_CMD&0xf8;
+ 102   1              ISP_CMD=ISP_CMD|PrgCommand;
+ 103   1              ISP_DATA=original_data;
+ 104   1              ISPgoon();
+ 105   1              ISP_IAP_disable();
+ 106   1      }
+ 107          
+ 108          void main(){
+ 109   1              uchar num1;
+ 110   1              TMOD=0x01;
+ 111   1              TH0=(65536-50000)/256;
+ 112   1              TL0=(65536-50000)%256;
+ 113   1              EA=1;
+ 114   1              ET0=1;
+ 115   1              TR0=1;
+ 116   1              num1=byte_read(0x2000);
+ 117   1              if(num1>=60)num1=0;
+C51 COMPILER V9.01   MAIN                                                                  08/20/2017 12:39:13 PAGE 3   
+
+ 118   1              while(1){
+ 119   2                      if(num>20){
+ 120   3                              num=0;
+ 121   3                              num1++;
+ 122   3                              SectorErase(0x2000);
+ 123   3                              byte_write(0x2000,num1);
+ 124   3                              if(num1==60)num1=0;
+ 125   3                              LedOut[6]=num1/10;
+ 126   3                              LedOut[7]=num1%10;
+ 127   3                      }
+ 128   2                      display();
+ 129   2              }
+ 130   1      }
+ 131          
+ 132          void timer() interrupt 1
+ 133          {
+ 134   1              TH0=(65536-50000)/256;
+ 135   1              TL0=(65536-50000)%256;
+ 136   1              num++;
+ 137   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    330    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

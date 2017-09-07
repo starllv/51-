@@ -1,0 +1,94 @@
+C51 COMPILER V9.01   MAIN                                                                  10/28/2015 15:33:19 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #define GPIO_KEY P1
+   3          #define GPIO_LED P0
+   4          
+   5          void delay(unsigned int c);
+   6          unsigned char Key_Scan();
+   7          
+   8          void main()
+   9          {
+  10   1              unsigned char ledValue,keyNum;
+  11   1              ledValue=0x00;
+  12   1              while(1)
+  13   1              {
+  14   2                      keyNum=Key_Scan();
+  15   2                      switch(keyNum)
+  16   2                      {
+  17   3                              case(0xfe):
+  18   3                                      ledValue=0x01;
+  19   3                                      break;
+  20   3                              case(0xfd):
+  21   3                                      ledValue=0x02;
+  22   3                                      break;
+  23   3                              case(0xfb):
+  24   3                                      ledValue=0x04;
+  25   3                                      break;
+  26   3                              case(0xf7):
+  27   3                                      ledValue=0x08;
+  28   3                                      break;
+  29   3                              case(0xef):
+  30   3                                      ledValue=0x10;
+  31   3                                      break;
+  32   3                              case(0xdf):
+  33   3                                      ledValue=0x20;
+  34   3                                      break;
+  35   3                              case(0xbf):
+  36   3                                      ledValue=0x40;
+  37   3                                      break;
+  38   3                              case(0x7f):
+  39   3                                      ledValue=0x80;
+  40   3                                      break;
+  41   3                              default:
+  42   3                                      break;  
+  43   3                      }
+  44   2                      GPIO_LED=ledValue;
+  45   2              }
+  46   1      }
+  47          
+  48          unsigned char Key_Scan()
+  49          {
+  50   1              unsigned char keyValue=0;
+  51   1              if(GPIO_KEY != 0xff)
+  52   1              {
+  53   2                      delay(1);
+  54   2                      if(GPIO_KEY != 0xff)
+  55   2                      {
+C51 COMPILER V9.01   MAIN                                                                  10/28/2015 15:33:19 PAGE 2   
+
+  56   3                              keyValue=GPIO_KEY;
+  57   3                              while(GPIO_KEY!=0xff);
+  58   3                      }
+  59   2              }
+  60   1              return keyValue;
+  61   1      }
+  62          
+  63          void delay(unsigned int c)
+  64          {
+  65   1              unsigned char a,b;
+  66   1              for(;c>0;c--)
+  67   1                      for(a=38;a>0;a--)
+  68   1                              for(b=130;b>0;b--);
+  69   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    137    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

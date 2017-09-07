@@ -1,0 +1,217 @@
+C51 COMPILER V9.01   MAIN                                                                  05/23/2017 21:21:54 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define uchar unsigned char
+   3          #define uint unsigned int
+   4          uchar code weima[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};
+   5          uchar code duanma[]={0x3f,0x06,0x5b,0x4f,0x66,
+   6                                          0x6d,0x7d,0x07,0x7f,0x6f};
+   7          uchar displaynum[]={0,0,0,0,0,0,0,0};
+   8          sbit k1=P2^0;
+   9          sbit k2=P2^1;
+  10          sbit k3=P2^2;
+  11          sbit k4=P2^3;
+  12          sbit k5=P2^4;
+  13          sbit k6=P2^5;
+  14          sbit k7=P2^6;
+  15          sbit k8=P2^7;
+  16          
+  17          void delayms(uint xms){
+  18   1              uint i;
+  19   1              for(xms;xms>0;xms--)
+  20   1                      for(i=100;i>0;i--);
+  21   1      }
+  22          
+  23          uchar key(){
+  24   1              uchar a=0;
+  25   1              if(k1==0){
+  26   2                      delayms(10);
+  27   2                      if(k1==0){
+  28   3                              while(!k1){
+  29   4                                      P0=weima[a];
+  30   4                                      P1=duanma[displaynum[a]];
+  31   4                                      a++;
+  32   4                                      if(a>7)a=0;
+  33   4                                      delayms(1);
+  34   4                              }
+  35   3                              return '1';
+  36   3                      }
+  37   2              }
+  38   1              if(k2==0){
+  39   2                      delayms(10);
+  40   2                      if(k2==0){
+  41   3                              P0=0x00;
+  42   3                              P1=0x3f;
+  43   3                              while(!k2){
+  44   4                                      P0=weima[a];
+  45   4                                      P1=duanma[displaynum[a]];
+  46   4                                      a++;
+  47   4                                      if(a>7)a=0;
+  48   4                                      delayms(1);
+  49   4                              }
+  50   3                              return '2';
+  51   3                      }
+  52   2              }
+  53   1              if(k3==0){
+  54   2                      delayms(10);
+  55   2                      if(k3==0){
+C51 COMPILER V9.01   MAIN                                                                  05/23/2017 21:21:54 PAGE 2   
+
+  56   3                              P0=0x00;
+  57   3                              P1=0x3f;
+  58   3                              while(!k3){
+  59   4                                      P0=weima[a];
+  60   4                                      P1=duanma[displaynum[a]];
+  61   4                                      a++;
+  62   4                                      if(a>7)a=0;
+  63   4                                      delayms(1);
+  64   4                              }
+  65   3                              return '3';
+  66   3                      }
+  67   2              }
+  68   1              if(k4==0){
+  69   2                      delayms(10);
+  70   2                      if(k4==0){
+  71   3                              P0=0x00;
+  72   3                              P1=0x3f;
+  73   3                              while(!k4){
+  74   4                                      P0=weima[a];
+  75   4                                      P1=duanma[displaynum[a]];
+  76   4                                      a++;
+  77   4                                      if(a>7)a=0;
+  78   4                                      delayms(1);
+  79   4                              }
+  80   3                              return '4';
+  81   3                      }
+  82   2              }
+  83   1              if(k5==0){
+  84   2                      delayms(10);
+  85   2                      if(k5==0){
+  86   3                              P0=0x00;
+  87   3                              P1=0x3f;
+  88   3                              while(!k5){
+  89   4                                      P0=weima[a];
+  90   4                                      P1=duanma[displaynum[a]];
+  91   4                                      a++;
+  92   4                                      if(a>7)a=0;
+  93   4                                      delayms(1);
+  94   4                              }
+  95   3                              return '5';
+  96   3                      }
+  97   2              }
+  98   1              if(k6==0){
+  99   2                      delayms(10);
+ 100   2                      if(k6==0){
+ 101   3                              P0=0x00;
+ 102   3                              P1=0x3f;
+ 103   3                              while(!k6){
+ 104   4                                      P0=weima[a];
+ 105   4                                      P1=duanma[displaynum[a]];
+ 106   4                                      a++;
+ 107   4                                      if(a>7)a=0;
+ 108   4                                      delayms(1);
+ 109   4                              }
+ 110   3                              return '6';
+ 111   3                      }
+ 112   2              }
+ 113   1              if(k7==0){
+ 114   2                      delayms(10);
+ 115   2                      if(k7==0){
+ 116   3                              P0=0x00;
+ 117   3                              P1=0x3f;
+C51 COMPILER V9.01   MAIN                                                                  05/23/2017 21:21:54 PAGE 3   
+
+ 118   3                              while(!k7){
+ 119   4                                      P0=weima[a];
+ 120   4                                      P1=duanma[displaynum[a]];
+ 121   4                                      a++;
+ 122   4                                      if(a>7)a=0;
+ 123   4                                      delayms(1);
+ 124   4                              }
+ 125   3                              return '7';
+ 126   3                      }
+ 127   2              }
+ 128   1              if(k8==0){
+ 129   2                      delayms(10);
+ 130   2                      if(k8==0){
+ 131   3                              P0=0x00;
+ 132   3                              P1=0x3f;
+ 133   3                              while(!k8){
+ 134   4                                      P0=weima[a];
+ 135   4                                      P1=duanma[displaynum[a]];
+ 136   4                                      a++;
+ 137   4                                      if(a>7)a=0;
+ 138   4                                      delayms(1);
+ 139   4                              }
+ 140   3                              return '8';
+ 141   3                      }
+ 142   2              }
+ 143   1      }
+ 144          
+ 145          void display(){
+ 146   1              uchar num;
+ 147   1              for(num=0;num<8;num++){
+ 148   2                      P0=weima[num];
+ 149   2                      P1=duanma[displaynum[num]];
+ 150   2                      delayms(1);
+ 151   2              }       
+ 152   1      }
+ 153          
+ 154          void main(){
+ 155   1              uchar KEY;
+ 156   1              while(1){
+ 157   2                      KEY=key();
+ 158   2                      switch(KEY)
+ 159   2                      {
+ 160   3                              case '1': displaynum[0]+=1;
+ 161   3                                              if(displaynum[0]==10)displaynum[0]=0;
+ 162   3                                              break;
+ 163   3                              case '2':displaynum[1]+=1;
+ 164   3                                              if(displaynum[1]==10)displaynum[1]=0;
+ 165   3                                              break;
+ 166   3                              case '3':displaynum[2]+=1;
+ 167   3                                              if(displaynum[2]==10)displaynum[2]=0;
+ 168   3                                              break;
+ 169   3                              case '4':displaynum[3]+=1;
+ 170   3                                              if(displaynum[3]==10)displaynum[3]=0;
+ 171   3                                              break;
+ 172   3                              case '5':displaynum[4]+=1;
+ 173   3                                              if(displaynum[4]==10)displaynum[4]=0;
+ 174   3                                              break;
+ 175   3                              case '6':displaynum[5]+=1;
+ 176   3                                              if(displaynum[5]==10)displaynum[5]=0;
+ 177   3                                              break;
+ 178   3                              case '7':displaynum[6]+=1;
+ 179   3                                              if(displaynum[6]==10)displaynum[6]=0;
+C51 COMPILER V9.01   MAIN                                                                  05/23/2017 21:21:54 PAGE 4   
+
+ 180   3                                              break;
+ 181   3                              case '8':displaynum[7]+=1;
+ 182   3                                              if(displaynum[7]==10)displaynum[7]=0;
+ 183   3                                              break;
+ 184   3                      }
+ 185   2                      display();
+ 186   2              }
+ 187   1      }
+*** WARNING C291 IN LINE 143 OF MAIN.C: not every exit path returns a value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    665    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

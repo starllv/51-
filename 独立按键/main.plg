@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\单片机程序\独立按键\main.uvproj
+Project File Date:  10/28/2015
+
+<h2>Output:</h2>
+compiling main.c...
+MAIN.C(44): error C141: syntax error near '='
+MAIN.C(51): error C141: syntax error near '='
+MAIN.C(54): error C141: syntax error near '='
+MAIN.C(57): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(44): error C141: syntax error near '='
+MAIN.C(51): error C141: syntax error near '='
+MAIN.C(54): error C141: syntax error near '='
+MAIN.C(57): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(45): error C141: syntax error near '='
+MAIN.C(52): error C141: syntax error near '='
+MAIN.C(55): error C141: syntax error near '='
+MAIN.C(58): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(45): error C141: syntax error near '='
+MAIN.C(52): error C141: syntax error near '='
+MAIN.C(55): error C141: syntax error near '='
+MAIN.C(58): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(45): error C141: syntax error near '='
+MAIN.C(52): error C141: syntax error near '='
+MAIN.C(55): error C141: syntax error near '='
+MAIN.C(58): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(45): error C141: syntax error near '='
+MAIN.C(52): error C141: syntax error near '='
+MAIN.C(55): error C141: syntax error near '='
+MAIN.C(58): error C141: syntax error near '='
+main.c - 4 Error(s), 0 Warning(s).
+compiling main.c...
+MAIN.C(51): warning C280: 'i': unreferenced local variable
+main.c - 0 Error(s), 1 Warning(s).
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=11.0 xdata=0 code=152
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=11.0 xdata=0 code=152
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=11.0 xdata=0 code=152
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=11.0 xdata=0 code=152
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,31 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\51单片机程序\利用51单片机定时器设计时钟2\main.uvproj
+Project File Date:  08/22/2017
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+linking...
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?RESPONS?MAIN
+    CALLER1: ?C_C51STARTUP
+    CALLER2: ?PR?TIMER?MAIN
+Program Size: data=16.1 xdata=0 code=1024
+creating hex file from "main"...
+"main" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+linking...
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?RESPONS?MAIN
+    CALLER1: ?C_C51STARTUP
+    CALLER2: ?PR?TIMER?MAIN
+Program Size: data=16.1 xdata=0 code=1024
+creating hex file from "main"...
+"main" - 0 Error(s), 1 Warning(s).

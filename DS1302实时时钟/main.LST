@@ -1,0 +1,359 @@
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"ds1302.h"
+   3          #include"lcd.h"
+   4          
+   5          #define uchar unsigned char
+   6          #define uint unsigned int
+   7          
+   8          sbit s1=P2^0;
+   9          sbit s2=P2^1;
+  10          sbit s3=P2^2;
+  11          sbit s4=P2^3;
+  12          sbit beep=P2^4;
+  13          
+  14          bit flag1,flag_ri;
+  15          uchar count,s1num,flag,t0_num;
+  16          char miao,fen,shi,day,month,year,week,amiao,afen,ashi;
+  17          uchar table[]=" 20  -  -       ";
+  18          uchar table1[]="      :  :  ";
+  19          
+  20          void delay(uint x){
+  21   1              uchar y;
+  22   1              for(x;x>0;x--)
+  23   1                      for(y=110;y>0;y--);
+  24   1      }
+  25          
+  26          void di(){
+  27   1              uchar n;
+  28   1              for(n=0;n<8;n++){
+  29   2                      beep=0;
+  30   2                      delay(10);
+  31   2                      beep=1;
+  32   2                      delay(10);
+  33   2              }
+  34   1      }
+  35          
+  36          void write_sfm(uchar add,char date){
+  37   1              char shi,ge;
+  38   1              shi=date/10;
+  39   1              ge=date%10;
+  40   1              writecom(0x80+0x40+add);
+  41   1              writedata(0x30+shi);
+  42   1              writedata(0x30+ge);
+  43   1      }
+  44          
+  45          void write_nyr(uchar add,char date){
+  46   1              char shi,ge;
+  47   1              shi=date/10;
+  48   1              ge=date%10;
+  49   1              writecom(0x80+add);
+  50   1              writedata('0'+shi);
+  51   1              writedata('0'+ge);      
+  52   1      }
+  53          
+  54          void write_week(char we){
+  55   1              writecom(0x80+12);
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 2   
+
+  56   1              switch(we)
+  57   1              {
+  58   2                      case 1: writedata('M');delay(5);
+  59   2                                      writedata('O');delay(5);
+  60   2                                      writedata('N');
+  61   2                                      break;
+  62   2                      case 2: writedata('T');delay(5);
+  63   2                                      writedata('U');delay(5);
+  64   2                                      writedata('E');
+  65   2                                      break;
+  66   2                      case 3: writedata('W');delay(5);
+  67   2                                      writedata('E');delay(5);
+  68   2                                      writedata('D');
+  69   2                                      break;
+  70   2                      case 4: writedata('T');delay(5);
+  71   2                                      writedata('H');delay(5);
+  72   2                                      writedata('U');
+  73   2                                      break;
+  74   2                      case 5: writedata('F');delay(5);
+  75   2                                      writedata('R');delay(5);
+  76   2                                      writedata('I');
+  77   2                                      break;
+  78   2                      case 6: writedata('S');delay(5);
+  79   2                                      writedata('A');delay(5);
+  80   2                                      writedata('T');
+  81   2                                      break;
+  82   2                      case 7: writedata('S');delay(5);
+  83   2                                      writedata('U');delay(5);
+  84   2                                      writedata('N');
+  85   2                                      break;
+  86   2              }
+  87   1      }
+  88          
+  89          void read_alarm(){
+  90   1              amiao=read_ds(0x81);
+  91   1              afen=read_ds(0x83);
+  92   1              ashi=read_ds(0x85);
+  93   1      }
+  94          
+  95          void init(){
+  96   1              uchar num;
+  97   1              EA=1;
+  98   1              EX1=1;
+  99   1              IT1=1;
+ 100   1              flag1=0;
+ 101   1              t0_num=0;
+ 102   1              s1num=0;
+ 103   1              week=1;
+ 104   1              write_ds(0x8e,0x00);
+ 105   1              set_time();
+ 106   1              lcdinit();
+ 107   1              for(num=0;num<15;num++){
+ 108   2                      writedata(table[num]);
+ 109   2                      delay(1);
+ 110   2              }
+ 111   1              writecom(0x80+0x40);
+ 112   1              for(num=0;num<11;num++){
+ 113   2                      writedata(table1[num]);
+ 114   2                      delay(1);
+ 115   2              }
+ 116   1      }
+ 117          
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 3   
+
+ 118          void keyscan(){
+ 119   1              if(flag_ri==1){
+ 120   2                      if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
+ 121   3                              delay(5);
+ 122   3                              if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
+ 123   4                                      while(!(s1&&s2&&s3&&s4));di();
+ 124   4                                      flag_ri=0;
+ 125   4                              }
+ 126   3                      }
+ 127   2              }
+ 128   1      
+ 129   1              if(s1==0){
+ 130   2                      delay(5);
+ 131   2                      if(s1==0){
+ 132   3                              s1num++;
+ 133   3                              if(flag1==1){
+ 134   4                                      if(s1num==4)s1num=1;
+ 135   4                              }
+ 136   3                              flag=1;
+ 137   3                              while(!s1);di();
+ 138   3                              switch(s1num)
+ 139   3                              {
+ 140   4                                      case 1: writecom(0x80+0x40+10);
+ 141   4                                                      writecom(0x0f);
+ 142   4                                                      break;
+ 143   4                                      case 2: writecom(0x80+0x40+7);
+ 144   4                                                      break;
+ 145   4                                      case 3: writecom(0x80+0x40+4);
+ 146   4                                                      break;
+ 147   4                                      case 4: writecom(0x80+12);
+ 148   4                                                      break;
+ 149   4                                      case 5: writecom(0x80+9);
+ 150   4                                                      break;
+ 151   4                                      case 6: writecom(0x80+6);
+ 152   4                                                      break;
+ 153   4                                      case 7: writecom(0x80+3);
+ 154   4                                                      break;
+ 155   4                                      case 8: s1num=0;
+ 156   4                                                      writecom(0x0c);
+ 157   4                                                      flag=0;
+ 158   4                                                      write_ds(0x80,miao);
+ 159   4                                                      write_ds(0x82,fen);
+ 160   4                                                      write_ds(0x84,shi);
+ 161   4                                                      write_ds(0x86,week);
+ 162   4                                                      write_ds(0x88,day);
+ 163   4                                                      write_ds(0x8a,month);
+ 164   4                                                      write_ds(0x8c,year);
+ 165   4                                                      break;
+ 166   4                              }
+ 167   3                      }
+ 168   2              }
+ 169   1              if(s1num!=0){
+ 170   2                      if(s2==0){
+ 171   3                              delay(5);
+ 172   3                              if(s2==0){
+ 173   4                                      while(!s2);di();
+ 174   4                                      switch(s1num)
+ 175   4                                      {
+ 176   5                                              case 1: miao++;
+ 177   5                                                              if(miao==60)miao=0;
+ 178   5                                                              write_sfm(10,miao);
+ 179   5                                                              writecom(0x80+0x40+10);
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 4   
+
+ 180   5                                                              break;
+ 181   5                                              case 2: fen++;
+ 182   5                                                              if(fen==60)fen=0;
+ 183   5                                                              write_sfm(7,fen);
+ 184   5                                                              writecom(0x80+0x40+7);
+ 185   5                                                              break;
+ 186   5                                              case 3: shi++;
+ 187   5                                                              if(shi==24)shi=0;
+ 188   5                                                              write_sfm(4,shi);
+ 189   5                                                              writecom(0x80+0x40+4);
+ 190   5                                                              break;
+ 191   5                                              case 4: week++;
+ 192   5                                                              if(week==8)week=1;
+ 193   5                                                              write_week(week);
+ 194   5                                                              writecom(0x80+12);
+ 195   5                                                              break;
+ 196   5                                              case 5: day++;
+ 197   5                                                              if(day==32)day=1;
+ 198   5                                                              write_nyr(9,day);
+ 199   5                                                              writecom(0x80+9);
+ 200   5                                                              break;
+ 201   5                                              case 6: month++;
+ 202   5                                                              if(month==13)month=1;
+ 203   5                                                              write_nyr(6,month);
+ 204   5                                                              writecom(0x80+6);
+ 205   5                                                              break;
+ 206   5                                              case 7: year++;
+ 207   5                                                              if(year==100)year=0;
+ 208   5                                                              write_nyr(3,year);
+ 209   5                                                              writecom(0x80+3);
+ 210   5                                                              break;
+ 211   5                                      }
+ 212   4                              }
+ 213   3                      }
+ 214   2                      if(s3==0){
+ 215   3                              delay(5);
+ 216   3                              if(s3==0){
+ 217   4                                      while(!s3);di();
+ 218   4                                      switch(s1num)
+ 219   4                                      {
+ 220   5                                              case 1: miao--;
+ 221   5                                                              if(miao==-1)miao=59;
+ 222   5                                                              write_sfm(10,miao);
+ 223   5                                                              writecom(0x80+0x40+10);
+ 224   5                                                              break;
+ 225   5                                              case 2: fen--;
+ 226   5                                                              if(fen==-1)fen=59;
+ 227   5                                                              write_sfm(7,fen);
+ 228   5                                                              writecom(0x80+0x40+7);
+ 229   5                                                              break;
+ 230   5                                              case 3: shi--;
+ 231   5                                                              if(shi==-1)shi=23;
+ 232   5                                                              write_sfm(4,shi);
+ 233   5                                                              writecom(0x80+0x40+4);
+ 234   5                                                              break;
+ 235   5                                              case 4: week--;
+ 236   5                                                              if(week==0)week=7;
+ 237   5                                                              write_week(week);
+ 238   5                                                              writecom(0x80+12);
+ 239   5                                                              break;
+ 240   5                                              case 5: day--;
+ 241   5                                                              if(day==0)day=31;
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 5   
+
+ 242   5                                                              write_nyr(9,day);
+ 243   5                                                              writecom(0x80+9);
+ 244   5                                                              break;
+ 245   5                                              case 6: month--;
+ 246   5                                                              if(month==0)month=12;
+ 247   5                                                              write_nyr(6,month);
+ 248   5                                                              writecom(0x80+6);
+ 249   5                                                              break;
+ 250   5                                              case 7: year--;
+ 251   5                                                              if(year==-1)year=99;
+ 252   5                                                              write_nyr(3,year);
+ 253   5                                                              writecom(0x80+3);
+ 254   5                                                              break;                  
+ 255   5                                      }
+ 256   4                              }
+ 257   3                      }
+ 258   2              }
+ 259   1              if(s4==0){
+ 260   2                      delay(5);
+ 261   2                      if(s4==0){
+ 262   3                              flag1=~flag1;
+ 263   3                              while(!s4);di();
+ 264   3                              if(flag1==0){
+ 265   4                                      flag=0;
+ 266   4                                      writecom(0x80+0x40);
+ 267   4                                      writedata(' ');
+ 268   4                                      writedata(' ');
+ 269   4                                      writecom(0x0c);
+ 270   4                                      write_ds(0x80,miao);
+ 271   4                                      write_ds(0x82,fen);
+ 272   4                                      write_ds(0x84,shi);
+ 273   4                              }
+ 274   3                              else{
+ 275   4                                      read_alarm();
+ 276   4                                      miao=amiao;
+ 277   4                                      fen=afen;
+ 278   4                                      shi=ashi;
+ 279   4                                      writecom(0x80+0x40);
+ 280   4                                      writedata('R');
+ 281   4                                      writedata('i');
+ 282   4                                      writecom(0x80+0x40+3);
+ 283   4                                      write_sfm(4,shi);
+ 284   4                                      write_sfm(7,fen);
+ 285   4                                      write_sfm(10,shi);
+ 286   4                              }
+ 287   3                      }
+ 288   2              }
+ 289   1      }
+ 290          
+ 291          void main(){
+ 292   1              init();
+ 293   1              while(1){
+ 294   2                      keyscan();
+ 295   2                      if(flag_ri==1){
+ 296   3                              di();
+ 297   3                              delay(100);
+ 298   3                              di();
+ 299   3                              delay(500);
+ 300   3                      }
+ 301   2                      if(flag==0&&flag1==0){
+ 302   3                              keyscan();
+ 303   3                              miao=read_ds(0x81);
+C51 COMPILER V9.01   MAIN                                                                  09/07/2017 17:08:09 PAGE 6   
+
+ 304   3                              fen=read_ds(0x83);
+ 305   3                              shi=read_ds(0x85);
+ 306   3                              day=read_ds(0x87);
+ 307   3                              month=read_ds(0x89);
+ 308   3                              week=read_ds(0x8b);
+ 309   3                              year=read_ds(0x8d);
+ 310   3                              write_sfm(10,miao);
+ 311   3                              write_sfm(7,fen);
+ 312   3                              write_sfm(4,shi);
+ 313   3                              write_week(week);
+ 314   3                              write_nyr(3,year);
+ 315   3                              write_nyr(6,month);
+ 316   3                              write_nyr(9,day);
+ 317   3                      }
+ 318   2              }
+ 319   1      }
+ 320          
+ 321          void exter() interrupt 2
+ 322          {
+ 323   1              uchar c;
+ 324   1              flag_ri=1;
+ 325   1              c=read_ds(0x0c);
+ 326   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1388    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     44       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

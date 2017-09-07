@@ -1,0 +1,436 @@
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include"24c02.h"
+   3          
+   4          #define uint unsigned int
+   5          #define uchar unsigned char
+   6          
+   7          sbit lcden=P2^7;
+   8          sbit rs=P2^6;
+   9          sbit rw=P2^5;
+  10          sbit s1=P2^3;
+  11          sbit s2=P2^4;
+  12          sbit s3=P2^2;
+  13          sbit beep=P1^0;
+  14          
+  15          uint counter=15536;
+  16          uchar count,s1num;
+  17          char miao,shi,fen,nian,yue,ri,xingqi;
+  18          uchar code table[7][3]={"SUN","MON","TUE","WED","THU","FRI","SAT"};
+  19          
+  20          void delay(uint x){
+  21   1              uchar y;
+  22   1              for(x;x>0;x--)
+  23   1                      for(y=110;y>0;y--); 
+  24   1      }
+  25          
+  26          void di(){
+  27   1              uchar i;
+  28   1              for(i=8;i>0;i--){
+  29   2                      beep=0;
+  30   2                      delay(10);
+  31   2                      beep=1;
+  32   2                      delay(10);
+  33   2              }
+  34   1      }
+  35          
+  36          void write_com(uchar com){
+  37   1              rw=0;
+  38   1              rs=0;
+  39   1              lcden=0;
+  40   1              P0=com;
+  41   1              delay(5);
+  42   1              lcden=1;
+  43   1              delay(5);
+  44   1              lcden=0;
+  45   1      }
+  46          
+  47          void write_data(uchar date){
+  48   1              rw=0;
+  49   1              rs=1;
+  50   1              lcden=0;
+  51   1              P0=date;
+  52   1              delay(5);
+  53   1              lcden=1;
+  54   1              delay(5);
+  55   1              lcden=0;
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 2   
+
+  56   1      }
+  57          
+  58          void write_sfm(uchar add,uchar date){
+  59   1              uchar ge,shi;
+  60   1              shi=date/10;
+  61   1              ge=date%10;
+  62   1              write_com(0x80+0x40+add);
+  63   1              write_data(0x30+shi);
+  64   1              write_data(0x30+ge);
+  65   1      }
+  66          
+  67          void write_nyr(uchar add,uchar date){
+  68   1              uchar ge,shi;
+  69   1              shi=date/10;
+  70   1              ge=date%10;
+  71   1              write_com(0x80+add);
+  72   1              write_data(0x30+shi);
+  73   1              write_data(0x30+ge);
+  74   1      }
+  75          
+  76          void write_week(uchar week){
+  77   1              uchar num;
+  78   1              write_com(0x80+13);
+  79   1              for(num=0;num<3;num++){
+  80   2                      write_data(table[week][num]);
+  81   2              }
+  82   1      }
+  83          
+  84          void init(){
+  85   1              lcden=0;
+  86   1              shi=0;
+  87   1              fen=0;
+  88   1              miao=0;
+  89   1              count=0;
+  90   1              s1num=0;
+  91   1              init_24c02();
+  92   1              write_com(0x38);
+  93   1              write_com(0x0c);
+  94   1              write_com(0x06);
+  95   1              write_com(0x01);
+  96   1              write_com(0x80+2);
+  97   1              write_data('2');
+  98   1              write_data('0');
+  99   1              write_com(0x80+6);
+ 100   1              write_data('-');
+ 101   1              write_com(0x80+9);
+ 102   1              write_data('-');
+ 103   1              write_com(0x80+0x40+6);
+ 104   1              write_data(':');
+ 105   1              delay(5);
+ 106   1              write_com(0x80+0x40+9);
+ 107   1              write_data(':');
+ 108   1              delay(5);
+ 109   1              nian=read_add(4);
+ 110   1              yue=read_add(5);
+ 111   1              ri=read_add(6);
+ 112   1              xingqi=read_add(7);
+ 113   1              miao=read_add(1);
+ 114   1              fen=read_add(2);
+ 115   1              shi=read_add(3);
+ 116   1              write_nyr(4,nian);
+ 117   1              write_nyr(7,yue);
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 3   
+
+ 118   1              write_nyr(10,ri);
+ 119   1              write_week(xingqi);
+ 120   1              write_sfm(10,miao);
+ 121   1              write_sfm(7,fen);
+ 122   1              write_sfm(4,shi);
+ 123   1              TMOD=0x01;
+ 124   1              TH0=counter/256;
+ 125   1              TL0=counter%256;
+ 126   1              EA=1;
+ 127   1              ET0=1;
+ 128   1              TR0=1;
+ 129   1      }
+ 130          
+ 131          void keyscan(){
+ 132   1              if(s1==0){
+ 133   2                      delay(5);
+ 134   2                      if(s1==0){
+ 135   3                              s1num++;
+ 136   3                              while(!s1);
+ 137   3                              di();
+ 138   3                              if(s1num==1){
+ 139   4                                      TR0=0;
+ 140   4                                      write_com(0x80+0x40+10);
+ 141   4                                      write_com(0x0f);
+ 142   4                              }
+ 143   3                              if(s1num==2){
+ 144   4                                      write_com(0x80+0x40+7);
+ 145   4                              }
+ 146   3                              if(s1num==3){
+ 147   4                                      write_com(0x80+0x40+4);
+ 148   4                              }
+ 149   3                              if(s1num==4){
+ 150   4                                      write_com(0x80+10);
+ 151   4                              }
+ 152   3                              if(s1num==5){
+ 153   4                                      write_com(0x80+7);
+ 154   4                              }
+ 155   3                              if(s1num==6){
+ 156   4                                      write_com(0x80+4);
+ 157   4                              }
+ 158   3                              if(s1num==7){
+ 159   4                                      write_com(0x80+13);
+ 160   4                              }
+ 161   3                              if(s1num==8){
+ 162   4                                      s1num=0;
+ 163   4                                      write_com(0x0c);
+ 164   4                                      TR0=1;
+ 165   4                              }
+ 166   3                      }
+ 167   2              }
+ 168   1              if(s1num!=0){
+ 169   2                      if(s2==0){
+ 170   3                              delay(5);
+ 171   3                              if(s2==0){
+ 172   4                                      while(!s2);
+ 173   4                                      di();
+ 174   4                                      if(s1num==1){
+ 175   5                                              miao++;
+ 176   5                                              if(miao>=60)miao=0;
+ 177   5                                              write_sfm(10,miao);
+ 178   5                                              write_com(0x80+0x40+10);
+ 179   5                                              write_add(1,miao);      
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 4   
+
+ 180   5                                      }
+ 181   4                                      if(s1num==2){
+ 182   5                                              fen++;
+ 183   5                                              if(fen>=60)fen=0;
+ 184   5                                              write_sfm(7,fen);
+ 185   5                                              write_com(0x80+0x40+7);
+ 186   5                                              write_add(2,fen);
+ 187   5                                      }
+ 188   4                                      if(s1num==3){
+ 189   5                                              shi++;
+ 190   5                                              if(shi>=24)shi=0;
+ 191   5                                              write_sfm(4,shi);
+ 192   5                                              write_com(0x80+0x40+4);
+ 193   5                                              write_add(3,shi);
+ 194   5                                      }
+ 195   4                                      if(s1num==4){
+ 196   5                                              ri++;
+ 197   5                                              if(ri==32)ri=1;
+ 198   5                                              write_nyr(10,ri);
+ 199   5                                              write_com(0x80+10);
+ 200   5                                              write_add(6,ri);
+ 201   5                                      }
+ 202   4                                      if(s1num==5){
+ 203   5                                              yue++;
+ 204   5                                              if(yue>=13)yue=1;
+ 205   5                                              write_nyr(7,yue);
+ 206   5                                              write_com(0x80+7);
+ 207   5                                              write_add(5,yue);
+ 208   5                                      }
+ 209   4                                      if(s1num==6){
+ 210   5                                              nian++;
+ 211   5                                              if(nian>=100)nian=0;
+ 212   5                                              write_nyr(4,nian);
+ 213   5                                              write_com(0x80+4);
+ 214   5                                              write_add(4,nian);
+ 215   5                                      }
+ 216   4                                      if(s1num==7){
+ 217   5                                              xingqi++;
+ 218   5                                              if(xingqi>=7)xingqi=0;
+ 219   5                                              write_week(xingqi);
+ 220   5                                              write_add(7,xingqi);
+ 221   5                                      }
+ 222   4                              }
+ 223   3                      }
+ 224   2                      if(s3==0){
+ 225   3                              delay(5);
+ 226   3                              if(s3==0){
+ 227   4                                      while(!s3);
+ 228   4                                      di();
+ 229   4                                      if(s1num==1){
+ 230   5                                              miao--;
+ 231   5                                              if(miao==-1)miao=59;
+ 232   5                                              write_sfm(10,miao);
+ 233   5                                              write_com(0x80+0x40+10);
+ 234   5                                              write_add(1,miao);
+ 235   5                                      }
+ 236   4                                      if(s1num==2){
+ 237   5                                              fen--;
+ 238   5                                              if(fen==-1)fen=59;
+ 239   5                                              write_sfm(7,fen);
+ 240   5                                              write_com(0x80+0x40+7);
+ 241   5                                              write_add(2,fen);
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 5   
+
+ 242   5                                      }
+ 243   4                                      if(s1num==3){
+ 244   5                                              shi--;
+ 245   5                                              if(shi==-1)shi=23;
+ 246   5                                              write_sfm(4,shi);
+ 247   5                                              write_com(0x80+0x40+4);
+ 248   5                                              write_add(3,shi);
+ 249   5                                      }
+ 250   4                                      if(s1num==4){
+ 251   5                                              ri--;
+ 252   5                                              if(ri==0)ri=31;
+ 253   5                                              write_nyr(10,ri);
+ 254   5                                              write_com(0x80+10);
+ 255   5                                              write_add(6,ri);
+ 256   5                                      }
+ 257   4                                      if(s1num==5){
+ 258   5                                              yue--;
+ 259   5                                              if(yue==0)yue=12;
+ 260   5                                              write_nyr(7,yue);
+ 261   5                                              write_com(0x80+7);
+ 262   5                                              write_add(5,yue);
+ 263   5                                      }
+ 264   4                                      if(s1num==6){
+ 265   5                                              nian--;
+ 266   5                                              if(nian==-1)nian=99;
+ 267   5                                              write_nyr(4,nian);
+ 268   5                                              write_com(0x80+4);
+ 269   5                                              write_add(4,nian);
+ 270   5                                      }
+ 271   4                                      if(s1num==7){
+ 272   5                                              xingqi--;
+ 273   5                                              if(xingqi==-1)xingqi=6;
+ 274   5                                              write_week(xingqi);
+ 275   5                                              write_add(7,xingqi);
+ 276   5                                      }
+ 277   4                              }
+ 278   3                      }
+ 279   2              }
+ 280   1      }
+ 281          
+ 282          void main(){
+ 283   1              init();
+ 284   1              while(1){
+ 285   2                      keyscan();
+ 286   2              }
+ 287   1      }
+ 288          
+ 289          void timer() interrupt 1
+ 290          {
+ 291   1              TH0=counter/256;
+ 292   1              TL0=counter%256;
+ 293   1              count++;
+ 294   1              if(count==20){
+ 295   2                      count=0;
+ 296   2                      miao++;
+ 297   2                      if(miao==60){
+ 298   3                              miao=0;
+ 299   3                              fen++;
+ 300   3                              if(fen==60){
+ 301   4                                      fen=0;
+ 302   4                                      shi++;
+ 303   4                                      if(shi==24){
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 6   
+
+ 304   5                                              shi=0;
+ 305   5                                              ri++;
+ 306   5                                              xingqi++;
+ 307   5                                              if(xingqi>=7)xingqi=0;
+ 308   5                                              switch(yue){
+ 309   6                                               case 1:if(ri>=32){
+ 310   7                                                      ri=1;
+ 311   7                                                      yue++;
+ 312   7                                                      write_nyr(7,yue);
+ 313   7                                                      write_add(5,yue);
+ 314   7                                               };break;
+ 315   6                                               case 2:if(ri>=29){
+ 316   7                                                      ri=1;
+ 317   7                                                      yue++;
+ 318   7                                                      write_nyr(7,yue);
+ 319   7                                                      write_add(5,yue);
+ 320   7                                               };break;
+ 321   6                                               case 3:if(ri>=32){
+ 322   7                                                      ri=1;
+ 323   7                                                      yue++;
+ 324   7                                                      write_nyr(7,yue);
+ 325   7                                                      write_add(5,yue);
+ 326   7                                               };break;
+ 327   6                                               case 4:if(ri>=31){
+ 328   7                                                      ri=1;
+ 329   7                                                      yue++;
+ 330   7                                                      write_nyr(7,yue);
+ 331   7                                                      write_add(5,yue);       
+ 332   7                                               };break;
+ 333   6                                               case 5:if(ri>=32){
+ 334   7                                                      ri=1;
+ 335   7                                                      yue++;
+ 336   7                                                      write_nyr(7,yue);
+ 337   7                                                      write_add(5,yue);
+ 338   7                                               };break;
+ 339   6                                               case 6:if(ri>=31){
+ 340   7                                                      ri=1;
+ 341   7                                                      yue++;
+ 342   7                                                      write_nyr(7,yue);
+ 343   7                                                      write_add(5,yue);
+ 344   7                                               };break;
+ 345   6                                               case 7:if(ri>=32){
+ 346   7                                                      ri=1;
+ 347   7                                                      yue++;
+ 348   7                                                      write_nyr(7,yue);
+ 349   7                                                      write_add(5,yue);
+ 350   7                                               };break;
+ 351   6                                               case 8:if(ri>=32){
+ 352   7                                                      ri=1;
+ 353   7                                                      yue++;
+ 354   7                                                      write_nyr(7,yue);
+ 355   7                                                      write_add(5,yue);
+ 356   7                                               };break;
+ 357   6                                               case 9:if(ri>=31){
+ 358   7                                                      ri=1;
+ 359   7                                                      yue++;
+ 360   7                                                      write_nyr(7,yue);
+ 361   7                                                      write_add(5,yue);
+ 362   7                                               };break;
+ 363   6                                               case 10:if(ri>=32){
+ 364   7                                                      ri=1;
+ 365   7                                                      yue++;
+C51 COMPILER V9.01   MAIN                                                                  08/27/2017 10:04:57 PAGE 7   
+
+ 366   7                                                      write_nyr(7,yue);
+ 367   7                                                      write_add(5,yue);
+ 368   7                                               };break;
+ 369   6                                               case 11:if(ri>=31){
+ 370   7                                                      ri=1;
+ 371   7                                                      yue++;
+ 372   7                                                      write_nyr(7,yue);
+ 373   7                                                      write_add(5,yue);
+ 374   7                                               };break;
+ 375   6                                               case 12:if(ri>=32){
+ 376   7                                                      ri=1;
+ 377   7                                                      yue=1;
+ 378   7                                                      nian++;
+ 379   7                                                      if(nian>=99)nian=0;
+ 380   7                                                      write_nyr(4,nian);
+ 381   7                                                      write_add(4,nian);
+ 382   7                                                      write_nyr(7,yue);
+ 383   7                                                      write_add(5,yue);
+ 384   7                                               };break;
+ 385   6                                               default:break;
+ 386   6                                               }
+ 387   5                                              write_nyr(10,ri);
+ 388   5                                              write_add(6,ri);
+ 389   5                                              write_week(xingqi);
+ 390   5                                              write_add(7,xingqi);
+ 391   5                                      }
+ 392   4                                      write_sfm(4,shi);
+ 393   4                                      write_add(3,shi);
+ 394   4                              }
+ 395   3                              write_sfm(7,fen);
+ 396   3                              write_add(2,fen);
+ 397   3                      }
+ 398   2                      write_sfm(10,miao);
+ 399   2                      write_add(1,miao);
+ 400   2              }       
+ 401   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1622    ----
+   CONSTANT SIZE    =     21    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

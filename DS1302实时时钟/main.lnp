@@ -1,0 +1,4 @@
+"ds1302.obj",
+"lcd.obj",
+"main.obj" 
+TO "main" 

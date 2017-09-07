@@ -1,0 +1,108 @@
+C51 COMPILER V9.01   MAIN                                                                  08/10/2017 19:43:35 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          #define uchar unsigned char
+   4          #define uint unsigned int
+   5          
+   6          sbit LS138A=P2^2;  
+   7          sbit LS138B=P2^3;
+   8          sbit LS138C=P2^4;
+   9          sbit In=P3^0;
+  10          
+  11          uchar code Disp_Tab[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x40};
+  12          uchar LedOut[8];
+  13          uchar num;
+  14          uint count;
+  15          
+  16          void delay(uint i){
+  17   1              uchar j;
+  18   1              for(i;i>0;i--)
+  19   1                      for(j=100;j>0;j--);
+  20   1      }
+  21          
+  22          void main(){
+  23   1              uchar i;
+  24   1              In=0;
+  25   1              TMOD=0x16;
+  26   1              TH0=0xff;
+  27   1              TL0=0xff;
+  28   1              TH1=65075/256;  //定时500微秒
+  29   1              TL1=65075%256;
+  30   1              ET0=1;
+  31   1              ET1=1;
+  32   1              EA=1;
+  33   1              TR0=1;
+  34   1              TR1=1;
+  35   1              while(1){
+  36   2      //              P0=~Disp_Tab[num%10];
+  37   2      
+  38   2                      LedOut[0]=0;
+  39   2              LedOut[1]=0;      //0x7f小数点
+  40   2              LedOut[2]=0;
+  41   2              LedOut[3]=0;
+  42   2      
+  43   2                      LedOut[4]=0;
+  44   2              LedOut[5]=0;
+  45   2              LedOut[6]=Disp_Tab[num/10];
+  46   2              LedOut[7]=Disp_Tab[num%10];;
+  47   2      
+  48   2      
+  49   2                      for( i=0; i<8; i++) 
+  50   2                      {        
+  51   3                              
+  52   3                              switch(i)                                         
+  53   3                      {           
+  54   4                                      case 0:LS138A=0; LS138B=0; LS138C=0; break;         
+  55   4                              case 1:LS138A=1; LS138B=0; LS138C=0; break;                     
+C51 COMPILER V9.01   MAIN                                                                  08/10/2017 19:43:35 PAGE 2   
+
+  56   4                              case 2:LS138A=0; LS138B=1; LS138C=0; break; 
+  57   4                              case 3:LS138A=1; LS138B=1; LS138C=0; break; 
+  58   4                                      case 4:LS138A=0; LS138B=0; LS138C=1; break;
+  59   4                                      case 5:LS138A=1; LS138B=0; LS138C=1; break;
+  60   4                                      case 6:LS138A=0; LS138B=1; LS138C=1; break;
+  61   4                                      case 7:LS138A=1; LS138B=1; LS138C=1; break;
+  62   4                              
+  63   4                      }
+  64   3                              P0 = LedOut[i];
+  65   3                              delay(5);
+  66   3                      }
+  67   2              }
+  68   1      }
+  69          
+  70          void t0() interrupt 1
+  71          {
+  72   1              num++;
+  73   1              if(num>=100)num=0;
+  74   1      }
+  75          
+  76          void t1() interrupt 3
+  77          {
+  78   1              count++;
+  79   1              if(count>=5){
+  80   2                      count=0;
+  81   2                      In=~In;
+  82   2              }
+  83   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    247    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
