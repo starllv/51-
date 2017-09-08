@@ -172,10 +172,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>8</ColumnNumber>
+      <ColumnNumber>4</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>45</TopLine>
-      <CurrentLine>46</CurrentLine>
+      <TopLine>46</TopLine>
+      <CurrentLine>83</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ds1302.c</PathWithFileName>
       <FilenameWithoutPath>ds1302.c</FilenameWithoutPath>
@@ -200,7 +200,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>15</ColumnNumber>
+      <ColumnNumber>16</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
       <CurrentLine>37</CurrentLine>
@@ -228,10 +228,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>10</ColumnNumber>
+      <ColumnNumber>23</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>104</TopLine>
-      <CurrentLine>104</CurrentLine>
+      <TopLine>175</TopLine>
+      <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -1583,13 +1583,13 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>10</ColumnNumber>
-          <TopLine>104</TopLine>
-          <CurrentLine>104</CurrentLine>
+          <ColumnNumber>23</ColumnNumber>
+          <TopLine>175</TopLine>
+          <CurrentLine>175</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\lcd.c</Name>
-          <ColumnNumber>15</ColumnNumber>
+          <ColumnNumber>16</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>37</CurrentLine>
         </Doc>
@@ -1601,9 +1601,9 @@
         </Doc>
         <Doc>
           <Name>.\ds1302.c</Name>
-          <ColumnNumber>8</ColumnNumber>
-          <TopLine>45</TopLine>
-          <CurrentLine>46</CurrentLine>
+          <ColumnNumber>4</ColumnNumber>
+          <TopLine>46</TopLine>
+          <CurrentLine>83</CurrentLine>
         </Doc>
         <Doc>
           <Name>DS1302.H</Name>

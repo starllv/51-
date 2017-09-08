@@ -106,7 +106,7 @@ void write_week(char we){
 }
 
 uchar shi_bcd(uchar num){
-	return ((num/10*16)+(num%10)); 	
+	return (((num/10)<<3)|(num%10)); 	
 }
 //void read_alarm(){
 // 	amiao=read_ds(0x81);

@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53   1      }
   54          
   55          void write_nyr(uchar add,char date){
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 2   
 
   56   1              char shi,ge;
   57   1              shi=date/10;
@@ -117,7 +117,7 @@ line level    source
  106   1      }
  107          
  108          uchar shi_bcd(uchar num){
- 109   1              return ((num/10*16)+(num%10));  
+ 109   1              return (((num/10)<<3)|(num%10));        
  110   1      }
  111          //void read_alarm(){
  112          //      amiao=read_ds(0x81);
@@ -126,7 +126,7 @@ line level    source
  115          //}
  116          
  117          void init(){
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 3   
 
  118   1              uchar num;
  119   1      //      EA=1;
@@ -190,7 +190,7 @@ line level    source
  177   4                                                      writecom(0x0c);
  178   4                                                      flag=0;
  179   4                                                      write_ds(0x8E,0x00);
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 4   
 
  180   4      
  181   4                                                      write_ds(0x80,shi_bcd(miao));
@@ -254,7 +254,7 @@ line level    source
  239   2                      if(s3==0){
  240   3                              delay(5);
  241   3                              if(s3==0){
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 5   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 5   
 
  242   4                                      while(!s3);di();
  243   4                                      switch(s1num)
@@ -318,7 +318,7 @@ line level    source
  301   1      //
  302   1      //                              write_ds(0x8E,0x80);
  303   1      //                      }
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 6   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 6   
 
  304   1      //                      else{
  305   1      //                              read_alarm();
@@ -377,12 +377,12 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1353    ----
+   CODE SIZE        =   1355    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =     48      10
-C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:05:59 PAGE 7   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 22:38:01 PAGE 7   
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      2    ----

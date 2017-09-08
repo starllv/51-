@@ -174,7 +174,7 @@
       <Focus>0</Focus>
       <ColumnNumber>8</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>21</TopLine>
+      <TopLine>45</TopLine>
       <CurrentLine>46</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ds1302.c</PathWithFileName>
@@ -228,10 +228,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>16</ColumnNumber>
+      <ColumnNumber>10</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>254</TopLine>
-      <CurrentLine>268</CurrentLine>
+      <TopLine>104</TopLine>
+      <CurrentLine>104</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -1579,13 +1579,13 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>3</ActiveTab>
+      <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>16</ColumnNumber>
-          <TopLine>254</TopLine>
-          <CurrentLine>268</CurrentLine>
+          <ColumnNumber>10</ColumnNumber>
+          <TopLine>104</TopLine>
+          <CurrentLine>104</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\lcd.c</Name>
@@ -1602,7 +1602,7 @@
         <Doc>
           <Name>.\ds1302.c</Name>
           <ColumnNumber>8</ColumnNumber>
-          <TopLine>21</TopLine>
+          <TopLine>45</TopLine>
           <CurrentLine>46</CurrentLine>
         </Doc>
         <Doc>

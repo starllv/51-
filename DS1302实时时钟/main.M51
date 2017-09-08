@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        09/08/2017  22:05:59  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        09/08/2017  22:38:01  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -52,14 +52,14 @@ LINK MAP OF MODULE:  main (DS1302)
             CODE    06C0H     0019H     UNIT         ?PR?LCDINIT?LCD
             CODE    06D9H     0019H     UNIT         ?PR?_DELAY?MAIN
             CODE    06F2H     0019H     UNIT         ?PR?DI?MAIN
-            CODE    070BH     0013H     UNIT         ?PR?_SHI_BCD?MAIN
-            CODE    071EH     000AH     UNIT         ?PR?_WRITECOM?LCD
-            CODE    0728H     000AH     UNIT         ?PR?_WRITEDATA?LCD
+            CODE    070BH     0015H     UNIT         ?PR?_SHI_BCD?MAIN
+            CODE    0720H     000AH     UNIT         ?PR?_WRITECOM?LCD
+            CODE    072AH     000AH     UNIT         ?PR?_WRITEDATA?LCD
 
 
 
 OVERLAY MAP OF MODULE:   main (DS1302)
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 2
 
 
 
@@ -119,7 +119,7 @@ SEGMENT                           DATA_GROUP
   +--> ?PR?_WRITECOM?LCD
   +--> ?PR?_WRITEDATA?LCD
   +--> ?PR?_DELAY?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 3
 
 
 
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:05A7H         LINE#         25
   C:05A8H         LINE#         26
   C:05AAH         LINE#         27
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 4
 
 
   C:05ABH         LINE#         28
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:0562H         LINE#         80
   C:0569H         LINE#         81
   C:0570H         LINE#         82
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 5
 
 
   C:0577H         LINE#         84
@@ -254,9 +254,9 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   B:00A0H.5       PUBLIC        RW
   C:05C4H         PUBLIC        _lcd_delay1ms
   B:00A0H.7       PUBLIC        E
-  C:0728H         PUBLIC        _writedata
+  C:072AH         PUBLIC        _writedata
   C:06C0H         PUBLIC        lcdinit
-  C:071EH         PUBLIC        _writecom
+  C:0720H         PUBLIC        _writecom
   -------         PROC          L?0015
   -------         ENDPROC       L?0015
   -------         PROC          _LCD_DELAY1MS
@@ -273,33 +273,33 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   -------         ENDPROC       _LCD_DELAY1MS
   -------         PROC          _WRITECOM
   D:0007H         SYMBOL        com
-  C:071EH         LINE#         10
-  C:071EH         LINE#         11
-  C:0720H         LINE#         12
-  C:0722H         LINE#         13
-  C:0722H         LINE#         14
-  C:0722H         LINE#         15
-  C:0722H         LINE#         16
-  C:0722H         LINE#         17
-  C:0725H         LINE#         18
-  C:0727H         LINE#         19
+  C:0720H         LINE#         10
+  C:0720H         LINE#         11
+  C:0722H         LINE#         12
+  C:0724H         LINE#         13
+  C:0724H         LINE#         14
+  C:0724H         LINE#         15
+  C:0724H         LINE#         16
+  C:0724H         LINE#         17
+  C:0727H         LINE#         18
+  C:0729H         LINE#         19
   -------         ENDPROC       _WRITECOM
   -------         PROC          _WRITEDATA
   D:0007H         SYMBOL        dat
-  C:0728H         LINE#         21
-  C:0728H         LINE#         22
-  C:072AH         LINE#         23
-  C:072CH         LINE#         24
-  C:072CH         LINE#         25
-  C:072CH         LINE#         26
-  C:072CH         LINE#         27
-  C:072CH         LINE#         28
-  C:072FH         LINE#         29
-  C:0731H         LINE#         30
+  C:072AH         LINE#         21
+  C:072AH         LINE#         22
+  C:072CH         LINE#         23
+  C:072EH         LINE#         24
+  C:072EH         LINE#         25
+  C:072EH         LINE#         26
+  C:072EH         LINE#         27
+  C:072EH         LINE#         28
+  C:0731H         LINE#         29
+  C:0733H         LINE#         30
   -------         ENDPROC       _WRITEDATA
   -------         PROC          LCDINIT
   C:06C0H         LINE#         32
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 6
 
 
   C:06C0H         LINE#         33
@@ -359,7 +359,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:06DDH         LINE#         21
   C:06DDH         LINE#         23
   C:06E6H         LINE#         24
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 7
 
 
   C:06F1H         LINE#         25
@@ -419,7 +419,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:0621H         LINE#         60
   C:0629H         LINE#         61
   -------         ENDPROC       _WRITE_NYR
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 8
 
 
   -------         PROC          _WRITE_NYR_BCD
@@ -477,9 +477,9 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   D:0007H         SYMBOL        num
   C:070BH         LINE#         108
   C:070BH         LINE#         109
-  C:071DH         LINE#         110
+  C:071FH         LINE#         110
   -------         ENDPROC       _SHI_BCD
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 9
 
 
   -------         PROC          INIT
@@ -539,7 +539,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:00A7H         LINE#         184
   C:00B3H         LINE#         185
   C:00BFH         LINE#         186
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 10
 
 
   C:00CBH         LINE#         187
@@ -599,7 +599,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:01EAH         LINE#         242
   C:01F0H         LINE#         243
   C:021EH         LINE#         244
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 11
 
 
   C:021EH         LINE#         245
@@ -659,7 +659,7 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:046AH         LINE#         339
   C:0474H         LINE#         341
   C:047BH         LINE#         342
-BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:05:59  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/08/2017  22:38:01  PAGE 12
 
 
   C:0482H         LINE#         343
@@ -676,5 +676,5 @@ SYMBOL TABLE OF MODULE:  main (DS1302)
   C:069EH         PUBLIC        ?C?SCDIV
   -------         ENDMOD        ?C?SCDIV
 
-Program Size: data=59.2 xdata=0 code=1842
+Program Size: data=59.2 xdata=0 code=1844
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
