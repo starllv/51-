@@ -3,11 +3,12 @@
 #define uchar unsigned char
 #define uint unsigned int
 
-sbit jia=P1^0;
-sbit jian=P1^1;
-sbit pwm=P0^1;
+sbit jia=P1^6;
+sbit jian=P1^7;
+sbit pwm=P3^0;
 
 uchar count,jd;
+uchar code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
 
 void delay(uint x){
  	uchar y;
@@ -27,29 +28,30 @@ void key(){
  	if(jia==0){
 	 	delay(10);
 		if(jia==0){
+			while(!jia);
 			count=0;
 		 	jd++;
 			if(jd>=6)jd=5;
-			while(!jia);
 		}
 	}
 	if(jian==0){
 	 	delay(10);
 		if(jian==0){
+			while(!jian);
 			count=0;
 			jd--;
 			if(jd==0)jd=1;
-			while(!jian);
 		}
 	}
 }
 
 void main(){
- 	jd=4;
+ 	jd=1;
 	count=0;
 	time_init();
 	while(1){
 	 	key();
+		P0=table[jd];
 	}
 }
 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  09/07/2017 22:19:57 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 17:54:43 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -12,76 +12,78 @@ line level    source
    3          #define uchar unsigned char
    4          #define uint unsigned int
    5          
-   6          sbit jia=P1^0;
-   7          sbit jian=P1^1;
-   8          sbit pwm=P0^1;
+   6          sbit jia=P1^6;
+   7          sbit jian=P1^7;
+   8          sbit pwm=P3^0;
    9          
   10          uchar count,jd;
-  11          
-  12          void delay(uint x){
-  13   1              uchar y;
-  14   1              for(x;x>0;x--)
-  15   1                      for(y=125;y>0;y--);
-  16   1      }
-  17          
-  18          void time_init(){
-  19   1              TMOD=0x01;
-  20   1              IE=0x82;
-  21   1              TH0=0xfe;
-  22   1              TL0=0x33;
-  23   1              TR0=1;
-  24   1      }
-  25          
-  26          void key(){
-  27   1              if(jia==0){
-  28   2                      delay(10);
-  29   2                      if(jia==0){
-  30   3                              count=0;
-  31   3                              jd++;
-  32   3                              if(jd>=6)jd=5;
-  33   3                              while(!jia);
-  34   3                      }
-  35   2              }
-  36   1              if(jian==0){
-  37   2                      delay(10);
-  38   2                      if(jian==0){
-  39   3                              count=0;
-  40   3                              jd--;
-  41   3                              if(jd==0)jd=1;
-  42   3                              while(!jian);
-  43   3                      }
-  44   2              }
-  45   1      }
-  46          
-  47          void main(){
-  48   1              jd=4;
-  49   1              count=0;
-  50   1              time_init();
-  51   1              while(1){
-  52   2                      key();
-  53   2              }
-  54   1      }
-  55          
-C51 COMPILER V9.01   MAIN                                                                  09/07/2017 22:19:57 PAGE 2   
+  11          uchar code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  12          
+  13          void delay(uint x){
+  14   1              uchar y;
+  15   1              for(x;x>0;x--)
+  16   1                      for(y=125;y>0;y--);
+  17   1      }
+  18          
+  19          void time_init(){
+  20   1              TMOD=0x01;
+  21   1              IE=0x82;
+  22   1              TH0=0xfe;
+  23   1              TL0=0x33;
+  24   1              TR0=1;
+  25   1      }
+  26          
+  27          void key(){
+  28   1              if(jia==0){
+  29   2                      delay(10);
+  30   2                      if(jia==0){
+  31   3                              while(!jia);
+  32   3                              count=0;
+  33   3                              jd++;
+  34   3                              if(jd>=6)jd=5;
+  35   3                      }
+  36   2              }
+  37   1              if(jian==0){
+  38   2                      delay(10);
+  39   2                      if(jian==0){
+  40   3                              while(!jian);
+  41   3                              count=0;
+  42   3                              jd--;
+  43   3                              if(jd==0)jd=1;
+  44   3                      }
+  45   2              }
+  46   1      }
+  47          
+  48          void main(){
+  49   1              jd=1;
+  50   1              count=0;
+  51   1              time_init();
+  52   1              while(1){
+  53   2                      key();
+  54   2                      P0=table[jd];
+  55   2              }
+C51 COMPILER V9.01   MAIN                                                                  09/08/2017 17:54:43 PAGE 2   
 
-  56          void time() interrupt 1
-  57          {
-  58   1              TH0=0xfe;
-  59   1              TL0=0x33;
-  60   1              if(count<jd){
-  61   2                      pwm=1;
-  62   2              }
-  63   1              else{
-  64   2                      pwm=0;
-  65   2              }
-  66   1              count += 1;
-  67   1              count=count%40;
-  68   1      }
+  56   1      }
+  57          
+  58          void time() interrupt 1
+  59          {
+  60   1              TH0=0xfe;
+  61   1              TL0=0x33;
+  62   1              if(count<jd){
+  63   2                      pwm=1;
+  64   2              }
+  65   1              else{
+  66   2                      pwm=0;
+  67   2              }
+  68   1              count += 1;
+  69   1              count=count%40;
+  70   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    150    ----
-   CONSTANT SIZE    =   ----    ----
+   CODE SIZE        =    158    ----
+   CONSTANT SIZE    =     10    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      2    ----

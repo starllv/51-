@@ -13,7 +13,8 @@ sbit beep=P2^4;
 
 bit flag1,flag_ri;
 uchar count,s1num,flag,t0_num;
-char miao,fen,shi,day,month,year,week,amiao,afen,ashi;
+uchar day,month,week,amiao,afen,ashi;
+uint miao,shi,fen,year;
 uchar table[]=" 20  -  -       ";
 uchar table1[]="      :  :  ";
 
@@ -38,14 +39,32 @@ void write_sfm(uchar add,char date){
 	shi=date/10;
 	ge=date%10;
 	writecom(0x80+0x40+add);
-	writedata(0x30+shi);
-	writedata(0x30+ge);
+	writedata('0'+shi);
+	writedata('0'+ge);
+}
+
+void write_sfm_bcd(uchar add,char date){
+ 	char shi,ge;
+	shi=date/16;
+	ge=date&0x0f;
+	writecom(0x80+0x40+add);
+	writedata('0'+shi);
+	writedata('0'+ge);
 }
 
 void write_nyr(uchar add,char date){
 	char shi,ge;
 	shi=date/10;
 	ge=date%10;
+	writecom(0x80+add);
+	writedata('0'+shi);
+	writedata('0'+ge); 	
+}
+
+void write_nyr_bcd(uchar add,char date){
+	char shi,ge;
+	shi=date/16;
+	ge=date&0x0f;
 	writecom(0x80+add);
 	writedata('0'+shi);
 	writedata('0'+ge); 	
@@ -86,22 +105,24 @@ void write_week(char we){
 	}
 }
 
-void read_alarm(){
- 	amiao=read_ds(0x81);
-	afen=read_ds(0x83);
-	ashi=read_ds(0x85);
+uchar shi_bcd(uchar num){
+	return ((num/10*16)+(num%10)); 	
 }
+//void read_alarm(){
+// 	amiao=read_ds(0x81);
+//	afen=read_ds(0x83);
+//	ashi=read_ds(0x85);
+//}
 
 void init(){
  	uchar num;
-	EA=1;
-	EX1=1;
-	IT1=1;
+//	EA=1;
+//	EX1=1;
+//	IT1=1;
 	flag1=0;
 	t0_num=0;
 	s1num=0;
 	week=1;
-	write_ds(0x8e,0x00);
 	set_time();
 	lcdinit();
 	for(num=0;num<15;num++){
@@ -116,23 +137,23 @@ void init(){
 }
 
 void keyscan(){
- 	if(flag_ri==1){
-	 	if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
-		 	delay(5);
-			if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
-			 	while(!(s1&&s2&&s3&&s4));di();
-				flag_ri=0;
-			}
-		}
-	}
+// 	if(flag_ri==1){
+//	 	if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
+//		 	delay(5);
+//			if((s1==0)||(s2==0)||(s3==0)||(s4==0)){
+//			 	while(!(s1&&s2&&s3&&s4));di();
+//				flag_ri=0;
+//			}
+//		}
+//	}
 
 	if(s1==0){
 	 	delay(5);
 		if(s1==0){
 		 	s1num++;
-			if(flag1==1){
-			 	if(s1num==4)s1num=1;
-			}
+//			if(flag1==1){
+//			 	if(s1num==4)s1num=1;
+//			}
 			flag=1;
 			while(!s1);di();
 			switch(s1num)
@@ -155,13 +176,17 @@ void keyscan(){
 				case 8: s1num=0;
 						writecom(0x0c);
 						flag=0;
-						write_ds(0x80,miao);
-						write_ds(0x82,fen);
-						write_ds(0x84,shi);
-						write_ds(0x86,week);
-						write_ds(0x88,day);
-						write_ds(0x8a,month);
-						write_ds(0x8c,year);
+						write_ds(0x8E,0x00);
+
+						write_ds(0x80,shi_bcd(miao));
+						write_ds(0x82,shi_bcd(fen));
+						write_ds(0x84,shi_bcd(shi));
+						write_ds(0x86,shi_bcd(day));
+						write_ds(0x88,shi_bcd(month));
+						write_ds(0x8a,shi_bcd(week));
+						write_ds(0x8c,shi_bcd(year));
+
+						write_ds(0x8E,0x80);
 						break;
 			}
 		}
@@ -256,48 +281,53 @@ void keyscan(){
 			}
 		}
 	}
-	if(s4==0){
-	 	delay(5);
-		if(s4==0){
-		 	flag1=~flag1;
-			while(!s4);di();
-			if(flag1==0){
-			 	flag=0;
-				writecom(0x80+0x40);
-				writedata(' ');
-				writedata(' ');
-				writecom(0x0c);
-				write_ds(0x80,miao);
-				write_ds(0x82,fen);
-				write_ds(0x84,shi);
-			}
-			else{
-			 	read_alarm();
-				miao=amiao;
-				fen=afen;
-				shi=ashi;
-				writecom(0x80+0x40);
-				writedata('R');
-				writedata('i');
-				writecom(0x80+0x40+3);
-				write_sfm(4,shi);
-				write_sfm(7,fen);
-				write_sfm(10,shi);
-			}
-		}
-	}
+//	if(s4==0){
+//	 	delay(5);
+//		if(s4==0){
+//		 	flag1=~flag1;
+//			while(!s4);di();
+//			if(flag1==0){
+//			 	flag=0;
+//				writecom(0x80+0x40);
+//				writedata(' ');
+//				writedata(' ');
+//				writecom(0x0c);
+//
+//				write_ds(0x8E,0x00);
+//
+//				write_ds(0x80,miao);
+//				write_ds(0x82,fen);
+//				write_ds(0x84,shi);
+//
+//				write_ds(0x8E,0x80);
+//			}
+//			else{
+//			 	read_alarm();
+//				miao=amiao;
+//				fen=afen;
+//				shi=ashi;
+//				writecom(0x80+0x40);
+//				writedata('R');
+//				writedata('i');
+//				writecom(0x80+0x40+3);
+//				write_sfm(4,shi);
+//				write_sfm(7,fen);
+//				write_sfm(10,shi);
+//			}
+//		}
+//	}
 }
 
 void main(){
  	init();
 	while(1){
 	 	keyscan();
-		if(flag_ri==1){
-		 	di();
-			delay(100);
-			di();
-			delay(500);
-		}
+//		if(flag_ri==1){
+//		 	di();
+//			delay(100);
+//			di();
+//			delay(500);
+//		}
 		if(flag==0&&flag1==0){
 		 	keyscan();
 			miao=read_ds(0x81);
@@ -307,20 +337,21 @@ void main(){
 			month=read_ds(0x89);
 			week=read_ds(0x8b);
 			year=read_ds(0x8d);
-			write_sfm(10,miao);
-			write_sfm(7,fen);
-			write_sfm(4,shi);
+
+			write_sfm_bcd(10,miao);
+			write_sfm_bcd(7,fen);
+			write_sfm_bcd(4,shi);
 			write_week(week);
-			write_nyr(3,year);
-			write_nyr(6,month);
-			write_nyr(9,day);
+			write_nyr_bcd(3,year);
+			write_nyr_bcd(6,month);
+			write_nyr_bcd(9,day);
 		}
 	}
 }
 
-void exter() interrupt 2
-{
- 	uchar c;
-	flag_ri=1;
-	c=read_ds(0x0c);
-}
+//void exter() interrupt 2
+//{
+// 	uchar c;
+//	flag_ri=1;
+//	c=read_ds(0x0c);
+//}
