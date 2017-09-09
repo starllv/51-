@@ -43,14 +43,14 @@ void write_sfm(uchar add,char date){
 	writedata('0'+ge);
 }
 
-void write_sfm_bcd(uchar add,char date){
- 	char shi,ge;
-	shi=date/16;
-	ge=date&0x0f;
-	writecom(0x80+0x40+add);
-	writedata('0'+shi);
-	writedata('0'+ge);
-}
+//void write_sfm_bcd(uchar add,char date){
+// 	char shi,ge;
+//	shi=date/16;
+//	ge=date&0x0f;
+//	writecom(0x80+0x40+add);
+//	writedata('0'+shi);
+//	writedata('0'+ge);
+//}
 
 void write_nyr(uchar add,char date){
 	char shi,ge;
@@ -61,14 +61,14 @@ void write_nyr(uchar add,char date){
 	writedata('0'+ge); 	
 }
 
-void write_nyr_bcd(uchar add,char date){
-	char shi,ge;
-	shi=date/16;
-	ge=date&0x0f;
-	writecom(0x80+add);
-	writedata('0'+shi);
-	writedata('0'+ge); 	
-}
+//void write_nyr_bcd(uchar add,char date){
+//	char shi,ge;
+//	shi=date/16;
+//	ge=date&0x0f;
+//	writecom(0x80+add);
+//	writedata('0'+shi);
+//	writedata('0'+ge); 	
+//}
 
 void write_week(char we){
  	writecom(0x80+12);
@@ -106,7 +106,11 @@ void write_week(char we){
 }
 
 uchar shi_bcd(uchar num){
-	return (((num/10)<<3)|(num%10)); 	
+	return (((num/10)<<4)|(num%10)); 	
+}
+
+uchar bcd_shi(uchar num){
+ 	return ((num/16*10)+(num&0x0f));
 }
 //void read_alarm(){
 // 	amiao=read_ds(0x81);
@@ -330,21 +334,21 @@ void main(){
 //		}
 		if(flag==0&&flag1==0){
 		 	keyscan();
-			miao=read_ds(0x81);
-			fen=read_ds(0x83);
-			shi=read_ds(0x85);
-			day=read_ds(0x87);
-			month=read_ds(0x89);
-			week=read_ds(0x8b);
-			year=read_ds(0x8d);
+			miao=bcd_shi(read_ds(0x81));
+			fen=bcd_shi(read_ds(0x83));
+			shi=bcd_shi(read_ds(0x85));
+			day=bcd_shi(read_ds(0x87));
+			month=bcd_shi(read_ds(0x89));
+			week=bcd_shi(read_ds(0x8b));
+			year=bcd_shi(read_ds(0x8d));
 
-			write_sfm_bcd(10,miao);
-			write_sfm_bcd(7,fen);
-			write_sfm_bcd(4,shi);
+			write_sfm(10,miao);
+			write_sfm(7,fen);
+			write_sfm(4,shi);
 			write_week(week);
-			write_nyr_bcd(3,year);
-			write_nyr_bcd(6,month);
-			write_nyr_bcd(9,day);
+			write_nyr(3,year);
+			write_nyr(6,month);
+			write_nyr(9,day);
 		}
 	}
 }
