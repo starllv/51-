@@ -1,0 +1,98 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\51单片机程序\基于DS18B20的温控系统\main.uvproj
+Project File Date:  09/09/2017
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(15): error C141: syntax error near 'unsigned'
+MAIN.C(46): error C183: unmodifiable lvalue
+MAIN.C(47): error C183: unmodifiable lvalue
+MAIN.C(48): error C183: unmodifiable lvalue
+compiling temp.c...
+TEMP.H(9): error C202: 'P3': undefined identifier
+TEMP.C(11): error C202: 'ds': undefined identifier
+TEMP.C(14): error C202: 'ds': undefined identifier
+TEMP.C(15): error C202: 'ds': undefined identifier
+TEMP.C(26): error C202: 'ds': undefined identifier
+TEMP.C(28): error C202: 'ds': undefined identifier
+TEMP.C(31): error C202: 'ds': undefined identifier
+TEMP.C(39): error C202: 'ds': undefined identifier
+TEMP.C(41): error C202: 'ds': undefined identifier
+TEMP.C(43): error C202: 'ds': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(15): error C141: syntax error near 'unsigned'
+MAIN.C(46): error C183: unmodifiable lvalue
+MAIN.C(47): error C183: unmodifiable lvalue
+MAIN.C(48): error C183: unmodifiable lvalue
+compiling temp.c...
+TEMP.H(9): error C202: 'P3': undefined identifier
+TEMP.C(11): error C202: 'ds': undefined identifier
+TEMP.C(14): error C202: 'ds': undefined identifier
+TEMP.C(15): error C202: 'ds': undefined identifier
+TEMP.C(26): error C202: 'ds': undefined identifier
+TEMP.C(28): error C202: 'ds': undefined identifier
+TEMP.C(31): error C202: 'ds': undefined identifier
+TEMP.C(39): error C202: 'ds': undefined identifier
+TEMP.C(41): error C202: 'ds': undefined identifier
+TEMP.C(43): error C202: 'ds': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(15): error C141: syntax error near 'unsigned'
+MAIN.C(46): error C183: unmodifiable lvalue
+MAIN.C(47): error C183: unmodifiable lvalue
+MAIN.C(48): error C183: unmodifiable lvalue
+compiling temp.c...
+TEMP.C(18): error C174: return-expression on void-function
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+TEMP.C(18): error C174: return-expression on void-function
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+TEMP.C(9): error C231: 'dsreset': redefinition
+TEMP.C(21): error C231: 'dsreset': redefinition
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  F_TEMP
+    MODULE:  temp.obj (TEMP)
+Program Size: data=58.1 xdata=0 code=3333
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+TEMP.C(71): error C202: 'f_temp': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+linking...
+Program Size: data=50.1 xdata=0 code=3314
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(75): error C141: syntax error near 'readtemp'
+compiling temp.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling temp.c...
+linking...
+Program Size: data=50.1 xdata=0 code=3314
+creating hex file from "main"...
+"main" - 0 Error(s), 0 Warning(s).
